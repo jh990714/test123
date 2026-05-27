@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FREE PETS — 매장 제휴 신청</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --blue: #2C73FF;
+      --blue-dark: #1D4ED8;
+      --blue-light: #EEF4FF;
+      --text: #202020;
+      --text-mid: #4B5563;
+      --text-light: #9CA3AF;
+      --border: #E5E7EB;
+      --bg-soft: #F8F8F8;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      background: linear-gradient(135deg, #EEF4FF 0%, #F5F8FF 50%, #EAF0FF 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* 로고 */
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    /* 카드 */
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1);
+    }
+
+    /* QR 배지 */
+    .qr-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blue-light);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 28px;
+    }
+
+    .qr-badge-icon {
+      font-size: 22px;
+    }
+
+    .qr-badge-text {
+      font-size: 13px;
+      color: var(--blue);
+    }
+
+    .qr-badge-text strong {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .qr-badge-code {
+      font-size: 12px;
+      color: var(--text-light);
+      font-family: monospace;
+    }
+
+    /* 타이틀 */
+    .card-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      font-size: 14px;
+      color: var(--text-mid);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    /* 폼 */
+    .fsec {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      margin: 20px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--blue-light);
+      letter-spacing: 0.5px;
+    }
+
+    .fg {
+      margin-bottom: 16px;
+    }
+
+    .fl {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .fl .req {
+      color: #EF4444;
+    }
+
+    .fi,
+    .fs {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color .15s;
+      background: #fff;
+    }
+
+    .fi:focus,
+    .fs:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(44, 115, 255, 0.1);
+    }
+
+    .fr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .ferr {
+      display: none;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #DC2626;
+      margin-bottom: 14px;
+    }
+
+    .fagree {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-mid);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .fagree input {
+      margin-top: 2px;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+
+    .fagree a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+
+    .bsub {
+      width: 100%;
+      padding: 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .15s;
+    }
+
+    .bsub:hover {
+      background: var(--blue-dark);
+    }
+
+    .bsub:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    /* 성공 화면 */
+    .success-wrap {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success-wrap.show {
+      display: flex;
+    }
+
+    .form-wrap.hide {
+      display: none;
+    }
+
+    .sc {
+      width: 80px;
+      height: 80px;
+      background: var(--blue-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .st {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .sd {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.8;
+    }
+
+    /* 유효하지않은 QR */
+    .invalid-wrap {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .invalid-wrap.show {
+      display: flex;
+    }
+
+    .invalid-icon {
+      font-size: 52px;
+      margin-bottom: 16px;
+    }
+
+    .invalid-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #DC2626;
+    }
+
+    .invalid-desc {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    /* 약관 모달 */
+    .terms-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+
+    .terms-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .terms-modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 88vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(16px);
+      transition: transform .25s;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .terms-overlay.open .terms-modal {
+      transform: translateY(0);
+    }
+
+    .terms-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: #F3F4F6;
+      cursor: pointer;
+      font-size: 16px;
+      color: #6B7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .terms-badge {
+      display: inline-block;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    .terms-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .terms-body {
+      font-size: 13px;
+      line-height: 1.8;
+      color: #4B5563;
+      max-height: 50vh;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .terms-body p.t {
+      font-weight: 700;
+      color: #202020;
+      margin: 16px 0 6px;
+    }
+
+    .terms-body ul {
+      padding-left: 16px;
+      margin-bottom: 8px;
+    }
+
+    .terms-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .terms-btn-cancel {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .terms-btn-agree {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: var(--blue);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .terms-btn-agree:hover {
+      background: var(--blue-dark);
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 32px 24px;
+      }
+
+      .fr {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 로고 -->
+  <div class="logo-wrap">
+    <svg width="130" height="25" viewBox="0 0 240 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#cr)">
+        <path
+          d="M99.4297 37.7666L94.1983 29.7087H89.7438V37.7666H85.0743V14.9814H96.2396C98.3223 14.9814 100.074 15.6839 101.504 17.0889C102.934 18.4938 103.645 20.2707 103.645 22.4195C103.645 24.0476 103.215 25.4608 102.347 26.6674C101.488 27.874 100.331 28.7418 98.876 29.2542L104.744 37.7583H99.4297V37.7666ZM89.7438 26.0228H95.0082C96.1157 26.0228 97.0495 25.6757 97.8181 24.9897C98.5867 24.3038 98.9669 23.4443 98.9669 22.4277C98.9669 21.4112 98.5867 20.5434 97.8347 19.8575C97.0826 19.1633 96.1735 18.8162 95.1074 18.8162H89.7438V26.0228Z"
+          fill="#2F3249" />
+        <path d="M113.33 33.6441V28.2144H124.305V24.3301H108.429V37.7681H124.991V33.6441H113.33Z" fill="#2F3249" />
+        <path d="M124.652 14.9814H108.429V19.0971H124.652V14.9814Z" fill="#2F3249" />
+        <path d="M79.81 14.9814H63.5868V19.0971H79.81V14.9814Z" fill="#2F3249" />
+        <path d="M79.81 24.3135H63.5868V24.33V28.4292V37.768H68.4877V28.4292H79.81V24.3135Z" fill="#2F3249" />
+        <path d="M134.728 33.6441V28.2144H145.703V24.3301H129.827V37.7681H146.389V33.6441H134.728Z" fill="#2F3249" />
+        <path d="M146.05 14.9814H129.827V19.0971H146.05V14.9814Z" fill="#2F3249" />
+        <path d="M186.298 33.6441V28.2144H197.281V24.3301H181.397V37.7681H197.959V33.6441H186.298Z" fill="#2F3249" />
+        <path d="M197.62 14.9814H181.397V19.0971H197.62V14.9814Z" fill="#2F3249" />
+        <path
+          d="M163.563 30.3047V37.7592H158.893V14.9741H169.604C171.761 14.9741 173.571 15.6931 175.034 17.1311C176.496 18.5692 177.224 20.4039 177.224 22.627C177.224 24.8502 176.496 26.7179 175.034 28.1477C173.571 29.5774 171.728 30.2964 169.505 30.2964H163.563V30.3047ZM163.563 26.47H168.381C169.587 26.47 170.579 26.1064 171.364 25.3791C172.141 24.6518 172.538 23.7345 172.538 22.627C172.538 21.5196 172.149 20.6353 171.364 19.8997C170.579 19.1725 169.62 18.8006 168.48 18.8006H163.563V26.4535V26.47Z"
+          fill="#2F3249" />
+        <path d="M220.033 19.0971H212.826V37.7666H207.926V19.0971H200.686V14.9814H220.033V19.0971Z" fill="#2F3249" />
+        <path
+          d="M8.14013 0.000976562L7.38806 4.24891C6.38806 9.9266 10.1814 14.5299 15.8591 14.5299H22.4707L21.2724 6.67866L32.4872 14.0506C32.9666 14.3646 33.5203 14.5299 34.0905 14.5299H47.7352L50.2889 0.000976562H8.14013Z"
+          fill="#2C73FF" />
+        <path
+          d="M18.1157 24.5866L22.0826 16.7354H15.4711C9.79339 16.7354 4.38017 21.3387 3.38017 27.0163L2.6281 31.2643L0 46.1486H14.5289L17.157 31.2643H40.2645L42.8264 16.7354H33.562C33.0826 16.7354 32.6116 16.8511 32.1901 17.0825L18.124 24.5949L18.1157 24.5866Z"
+          fill="#2F3249" />
+      </g>
+      <defs>
+        <clipPath id="cr">
+          <rect width="240" height="46.1488" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- 카드 -->
+  <div class="card">
+
+    <!-- 유효하지 않은 QR -->
+    <div class="invalid-wrap" id="invalidWrap">
+      <div class="invalid-icon">⚠️</div>
+      <div class="invalid-title">유효하지 않은 QR코드입니다</div>
+      <div class="invalid-desc">올바른 FREE PETS QR코드로 다시 스캔해주세요.<br />문의: freepets77@gmail.com</div>
+    </div>
+
+    <!-- 폼 -->
+    <div class="form-wrap" id="formWrap">
+      <!-- QR 배지 -->
+      <div class="qr-badge" id="qrBadge">
+        <div class="qr-badge-icon">📱</div>
+        <div class="qr-badge-text">
+          <strong>QR 코드 인식 완료</strong>
+          <span class="qr-badge-code" id="qrCodeDisplay"></span>
+        </div>
+      </div>
+
+      <div class="card-title">매장 제휴 신청</div>
+      <div class="card-sub">아래 정보를 입력해주시면 검토 후 영업일 기준 2~3일 내에 연락드립니다.</div>
+
+      <div class="fsec">🔐 로그인 계정 정보</div>
+      <div class="fg"><label class="fl">이메일 (아이디) <span class="req">*</span></label><input type="email" class="fi"
+          id="f_email" placeholder="example@email.com" /></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">비밀번호 <span class="req">*</span></label><input type="password" class="fi"
+            id="f_password" placeholder="8자 이상" /></div>
+        <div class="fg"><label class="fl">비밀번호 확인 <span class="req">*</span></label><input type="password" class="fi"
+            id="f_passwordConfirm" placeholder="재입력" /></div>
+      </div>
+
+      <div class="fsec">🏢 사업자 정보</div>
+      <div class="fr">
+        <div class="fg"><label class="fl">사업자명 <span class="req">*</span></label><input type="text" class="fi"
+            id="f_businessName" placeholder="예) 프리펫스" /></div>
+        <div class="fg"><label class="fl">사업자등록번호 <span class="req">*</span></label><input type="text" class="fi"
+            id="f_businessNumber" placeholder="000-00-00000" maxlength="12" oninput="fmtBiz(this)" /></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">대표자 이름 <span class="req">*</span></label><input type="text" class="fi"
+            id="f_ownerName" placeholder="홍길동" /></div>
+        <div class="fg"><label class="fl">대표자 연락처 <span class="req">*</span></label><input type="tel" class="fi"
+            id="f_phoneNumber" placeholder="010-0000-0000" /></div>
+      </div>
+
+      <div class="fsec">🏪 매장 정보</div>
+      <div class="fr">
+        <div class="fg"><label class="fl">매장명 <span class="req">*</span></label><input type="text" class="fi"
+            id="f_storeName" placeholder="예) 프리펫스" /></div>
+        <div class="fg"><label class="fl">매장 전화번호 <span class="req">*</span></label><input type="tel" class="fi"
+            id="f_storePhone" placeholder="02-0000-0000" /></div>
+      </div>
+      <div class="fg"><label class="fl">매장 주소 <span class="req">*</span></label><input type="text" class="fi"
+          id="f_storeAddress" placeholder="예) 서울시 강남구 테헤란로 123" /></div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">업종 <span class="req">*</span></label>
+          <select class="fi" id="f_rawCategory">
+            <option value="">선택해주세요</option>
+            <option value="동물병원">동물병원</option>
+            <option value="카페">카페</option>
+            <option value="호텔">호텔</option>
+            <option value="식당">식당</option>
+            <option value="공원">공원</option>
+            <option value="주점">주점</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">사업자등록증 <span class="req">*</span></label>
+          <input type="file" class="fi" id="f_businessLicense" accept="image/*,.pdf" style="padding:8px 14px;" />
+        </div>
+      </div>
+
+      <div class="ferr" id="formError"></div>
+
+      <div class="fagree">
+        <input type="checkbox" id="agreeCheck" />
+        <label for="agreeCheck">
+          <a href="#" onclick="openTerms();return false;">제휴 매장 이용약관</a>에 동의합니다.
+        </label>
+      </div>
+
+      <button class="bsub" id="submitBtn" onclick="submitForm()">제휴 신청 완료하기 →</button>
+    </div>
+
+    <!-- 성공 화면 -->
+    <div class="success-wrap" id="successWrap">
+      <div class="sc">✅</div>
+      <div class="st">신청이 완료됐어요!</div>
+      <div class="sd">
+        제휴 신청해 주셔서 감사합니다.<br />
+        검토 후 영업일 기준 <strong>2~3일 내</strong>에<br />
+        입력하신 연락처로 연락드리겠습니다. 🐾
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 약관 모달 -->
+  <div class="terms-overlay" id="termsOverlay" onclick="if(event.target===this)closeTerms()">
+    <div class="terms-modal">
+      <button class="terms-close" onclick="closeTerms()">✕</button>
+      <div class="terms-badge">이용약관</div>
+      <div class="terms-title">제휴 매장 이용약관</div>
+      <div class="terms-body">
+        <p class="t">제1조 (목적)</p>
+        <p>본 약관은 FREE PETS(이하 "회사")가 제공하는 반려동물 출입 인증 및 관리 서비스(이하 "서비스")를 제휴 매장(이하 "매장")이 이용함에 있어 회사와 매장 간 권리, 의무 및 책임사항을
+          규정함을 목적으로 합니다.</p>
+        <p class="t">제2조 (정의)</p>
+        <ul>
+          <li><b>FREE PETS 서비스:</b> 반려동물의 예방접종 정보, 동물등록정보, 출입 인증 정보를 기반으로 반려동물 동반 시설 이용을 지원하는 플랫폼 서비스</li>
+          <li><b>제휴 매장:</b> FREE PETS 시스템을 통해 반려동물 출입 인증을 확인하고 반려동물 동반 이용을 허용하는 사업자</li>
+          <li><b>회원:</b> FREE PETS 서비스를 이용하는 반려동물 보호자</li>
+          <li><b>출입 인증:</b> 회원이 FREE PETS 앱 또는 QR 인증을 통해 반려동물 출입 가능 여부를 확인하는 절차</li>
+        </ul>
+        <p class="t">제3조 (서비스 제공)</p>
+        <ul>
+          <li>반려동물 예방접종 인증 정보 제공</li>
+          <li>반려동물 출입 인증 시스템 제공</li>
+          <li>반려동물 정보 확인 기능 제공</li>
+          <li>매장 등록 및 홍보 서비스</li>
+          <li>매장 이용 통계 데이터 제공</li>
+        </ul>
+        <p class="t">제4조 (제휴 매장 등록)</p>
+        <p>매장은 서비스 이용을 위해 사업자 정보(상호명, 사업자등록번호, 대표자명, 사업장 주소, 연락처) 및 매장 운영 정보를 등록해야 합니다. 회사는 제출된 정보를 검토하여 제휴 여부를 결정할 수
+          있습니다.</p>
+        <p class="t">제5조 (매장의 의무)</p>
+        <ul>
+          <li>반려동물 출입 정책을 명확히 안내해야 합니다.</li>
+          <li>FREE PETS 인증 시스템을 정상적으로 사용해야 합니다.</li>
+          <li>반려동물 안전 관리를 위해 합리적인 조치를 취해야 합니다.</li>
+          <li>법령에서 정한 위생 및 안전 기준을 준수해야 합니다.</li>
+        </ul>
+        <p class="t">제6조 (책임 구조)</p>
+        <p>FREE PETS 서비스는 반려동물 출입 인증 플랫폼입니다. 회사는 반려동물 간 사고, 보호자의 관리 부주의, 매장 내 발생한 반려동물 관련 사고, 회원 간 분쟁에 대해 책임을 부담하지 않습니다.
+        </p>
+        <p class="t">제7조 (데이터 수집 및 활용)</p>
+        <p>회사는 서비스 운영을 위해 매장 이용 횟수, 방문 회원 수, 반려동물 출입 인증 기록 등을 수집 및 활용할 수 있습니다. 매장은 서비스를 통해 확인한 회원 정보를 서비스 목적 외로 사용할 수
+          없습니다.</p>
+        <p class="t">제8조 (서비스 이용 제한)</p>
+        <p>회사는 허위 정보 등록, 서비스 악용, 법령 위반, 서비스 운영 방해 시 매장의 서비스 이용을 제한할 수 있습니다.</p>
+        <p class="t">제9조 (계약 해지)</p>
+        <p>매장 요청, 약관 위반, 법령 위반, 서비스 운영 종료 시 회사 또는 매장은 계약을 해지할 수 있습니다.</p>
+        <p class="t">제10조 (분쟁 해결)</p>
+        <p>본 약관과 관련된 분쟁은 대한민국 법률을 따르며 관할 법원은 회사 본점 소재지 관할 법원으로 합니다.</p>
+      </div>
+      <div class="terms-btns">
+        <button class="terms-btn-cancel" onclick="closeTerms()">닫기</button>
+        <button class="terms-btn-agree" onclick="agreeTerms()">동의하고 닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // URL에서 qrCode 파라미터 읽기
+    // const params = new URLSearchParams(window.location.search);
+    // const qrCode = params.get('qrCode');
+
+    // // QR 코드 없으면 유효하지 않은 페이지 표시
+    // if (!qrCode) {
+    //   document.getElementById('formWrap').style.display = 'none';
+    //   document.getElementById('invalidWrap').classList.add('show');
+    // } else {
+    //   document.getElementById('qrCodeDisplay').textContent = `QR 코드: ${qrCode}`;
+    // }
+
+    // function fmtBiz(inp) {
+    //   let v = inp.value.replace(/\D/g, '').slice(0, 10);
+    //   if (v.length > 5) v = v.slice(0, 3) + '-' + v.slice(3, 5) + '-' + v.slice(5);
+    //   else if (v.length > 3) v = v.slice(0, 3) + '-' + v.slice(3);
+    //   inp.value = v;
+    // }
+
+    function openTerms() { document.getElementById('termsOverlay').classList.add('open'); }
+    function closeTerms() { document.getElementById('termsOverlay').classList.remove('open'); }
+    function agreeTerms() { document.getElementById('agreeCheck').checked = true; closeTerms(); }
+
+    async function submitForm() {
+      document.getElementById('formError').style.display = 'none';
+      const g = id => document.getElementById(id).value.trim();
+      const email = g('f_email'), password = document.getElementById('f_password').value,
+        passwordConfirm = document.getElementById('f_passwordConfirm').value,
+        businessName = g('f_businessName'), businessNumber = g('f_businessNumber'),
+        ownerName = g('f_ownerName'), phoneNumber = g('f_phoneNumber'),
+        storeName = g('f_storeName'), storePhone = g('f_storePhone'),
+        storeAddress = g('f_storeAddress'), rawCategory = g('f_rawCategory'),
+        agree = document.getElementById('agreeCheck').checked;
+      const licenseFile = document.getElementById('f_businessLicense').files[0];
+
+      const err = msg => {
+        const el = document.getElementById('formError');
+        el.textContent = msg; el.style.display = 'block';
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
+
+      if (!email || !password || !passwordConfirm || !businessName || !businessNumber || !ownerName || !phoneNumber || !storeName || !storePhone || !storeAddress || !rawCategory) return err('모든 필수 항목을 입력해주세요.');
+      if (!licenseFile) return err('사업자등록증 파일을 업로드해주세요.');
+      if (password !== passwordConfirm) return err('비밀번호가 일치하지 않습니다.');
+      if (password.length < 8) return err('비밀번호는 8자 이상이어야 합니다.');
+      if (!agree) return err('제휴 매장 이용약관에 동의해주세요.');
+
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = '신청 중...'; btn.disabled = true;
+
+      try {
+        const formData = new FormData();
+
+        const dataObj = {
+          email, password, businessNumber, businessName,
+          ownerName, phoneNumber, storeName, storeAddress,
+          storePhone, rawCategory, qrCode
+        };
+        formData.append('data', JSON.stringify(dataObj));
+
+        formData.append('businessLicenseFile', licenseFile);
+        const res = await fetch('https://api.freepets.kr/api/v1/store-owners/register/with-file', {
+          method: 'POST',
+          body: formData
+          // Content-Type은 자동으로 multipart/form-data로 설정됨
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          document.getElementById('formWrap').classList.add('hide');
+          document.getElementById('successWrap').classList.add('show');
+        } else if (res.status === 409) {
+          err('이미 등록된 이메일 또는 사업자번호입니다.');
+        } else {
+          err(data.message || '신청 중 오류가 발생했습니다.');
+        }
+      } catch (e) {
+        console.error('Error:', e);
+        err('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      } finally {
+        btn.textContent = '제휴 신청 완료하기 →'; btn.disabled = false;
+      }
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTerms(); });
+  </script>
+</body>
+
+</html>
